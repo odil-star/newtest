@@ -18,6 +18,7 @@ type Route =
 const errMsg = (e: unknown) => (e instanceof Error ? e.message : 'Что-то пошло не так')
 const LIMIT_MSG = 'Бесплатный лимит исчерпан. Чтобы продолжить, оформите премиум через администратора.'
 const ROLE_LABEL: Record<Role, string> = { user: 'Обычный', premium: 'Премиум', admin: 'Админ' }
+const ADMIN_TG = 'https://t.me/frontendMmM'
 const AUTO_NEXT_MS = 1500
 const TEST_COLORS = ['#22d3ee', '#a78bfa', '#f472b6', '#a3e635', '#fbbf24', '#60a5fa', '#fb923c', '#34d399']
 const TEST_ICONS = ['book', 'brain', 'layers', 'flag'] as const
@@ -145,8 +146,24 @@ function LimitNote({ role, left, limit }: { role?: Role; left?: number | null; l
     <div className={left > 0 ? 'limit-note' : 'limit-note out'}>
       {left > 0
         ? `Бесплатных ответов осталось: ${left} из ${limit}`
-        : 'Бесплатный лимит исчерпан — премиум выдаёт администратор'}
+        : <>Бесплатный лимит исчерпан — <a href={ADMIN_TG} target="_blank" rel="noopener noreferrer">обратитесь к администратору</a></>}
     </div>
+  )
+}
+
+/** Ссылка на Telegram администратора для получения премиума. */
+function ContactAdmin() {
+  return (
+    <a className="tg-btn" href={ADMIN_TG} target="_blank" rel="noopener noreferrer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M21.9 4.3 18.7 19.5c-.2 1-.9 1.3-1.7.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.5 13 1.8 11.5c-1-.3-1-1 .2-1.5L20.3 3c.9-.3 1.6.2 1.6 1.3z" />
+      </svg>
+      <span className="tg-text">
+        <b>Написать администратору</b>
+        <small>Telegram · @frontendMmM</small>
+      </span>
+      <Icon name="right" size={18} />
+    </a>
   )
 }
 
@@ -461,6 +478,7 @@ function Quiz({ route, go }: { route: Extract<Route, { page: 'quiz' }>; go: (r: 
           <p className="muted">Обратитесь к администратору, чтобы получить премиум-доступ.</p>
           {err && <div className="error">{err}</div>}
           <div className="actions" style={{ justifyContent: 'center' }}>
+            <ContactAdmin />
             {chosen.length > 0 && (
               <button className="primary" disabled={busy} onClick={finishEarly}>
                 Показать результат ({chosen.length})
@@ -539,6 +557,7 @@ function ResultView({ result, test, go }: { result: Result; test: Test; go: (r: 
         <p className="muted">{result.score} из {result.total} правильных ответов</p>
         {result.free_answers_left === 0 && <p className="limit-note out">{LIMIT_MSG}</p>}
         <div className="actions" style={{ justifyContent: 'center', marginTop: 18 }}>
+          {result.free_answers_left === 0 && <ContactAdmin />}
           <button className="primary" onClick={() => go({ page: 'blocks', test })}><Icon name="redo" size={18} /> Ещё раз</button>
           <button onClick={() => go({ page: 'tests' })}>К тестам</button>
           <button onClick={() => go({ page: 'leaderboard' })}><Icon name="trophy" size={18} /> Рейтинг</button>

@@ -820,3 +820,19 @@ input[type='text'], input[type='password'], input[type='file'], textarea { backg
   background: var(--surface-2); border: 1px solid var(--border); font-size: 13.5px; line-height: 1.5;
 }
 .format-hint code { background: var(--surface-2); padding: 1px 6px; border-radius: 6px; }
+
+.limit-note a { color: inherit; font-weight: 600; text-decoration: underline; }
+
+.tg-btn {
+  display: inline-flex; align-items: center; gap: 12px; padding: 12px 18px;
+  border-radius: 14px; text-decoration: none; color: #fff;
+  background: linear-gradient(135deg, #2aabee, #229ed9);
+  box-shadow: 0 8px 22px -8px rgba(34, 158, 217, .7);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.tg-btn:hover { transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 12px 26px -8px rgba(34, 158, 217, .85); }
+.tg-btn:active { transform: translateY(0); }
+.tg-btn:focus-visible { outline: none; box-shadow: var(--ring); }
+.tg-text { display: flex; flex-direction: column; text-align: left; line-height: 1.25; }
+.tg-text b { font-size: 15px; font-weight: 700; }
+.tg-text small { font-size: 12px; opacity: .85; }
