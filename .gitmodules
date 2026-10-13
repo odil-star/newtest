@@ -1,0 +1,3 @@
+[submodule "server-exapmtest"]
+	path = server-exapmtest
+	url = https://github.com/odil-star/server-exapmtest
